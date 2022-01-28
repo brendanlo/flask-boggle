@@ -23,15 +23,19 @@ class BoggleAppTestCase(TestCase):
 
         with self.client as client:
             response = client.get('/')
-            ...
+            
             # test that you're getting a template
             html = response.get_data(as_text=True)
-
             self.assertIn('<button class="word-input-btn">Go</button>', html)
+            # add a line of comment in html
 
     def test_api_new_game(self):
         """Test starting a new game."""
 
         with self.client as client:
-            ...
+            response = client.post('/api/new-game')
+            
+            gameId_board_obj = response.json
             # write a test for this route
+
+            self.assertIsNotNone(gameId_board_obj['gameId'])
