@@ -53,20 +53,31 @@ class BoggleAppTestCase(TestCase):
         with self.client as client:
             response_new_game = client.post("/api/new-game")
 
-            breakpoint()
+            # breakpoint()
             game_obj = response_new_game.json
 
             game_id = game_obj.get("gameId")
 
-            # games[game_id].board = [
-            #     ['C', 'A', 'T', 'O', 'L'],
-            #     ['A', 'Z', 'A', 'O', 'G'],
-            #     ['S', 'S', 'I', 'U', 'D'],
-            #     ['A', 'E', 'L', 'E', 'M'],
-            #     ['J', 'R', 'D', 'S', 'G']]
+            games[game_id].board = [
+                ['C', 'A', 'T', 'O', 'L'],
+                ['A', 'Z', 'A', 'O', 'G'],
+                ['S', 'S', 'I', 'U', 'D'],
+                ['A', 'E', 'L', 'E', 'M'],
+                ['J', 'R', 'D', 'S', 'G']]
 
-            response_score_word = client.post(
-                "/api/score-word", json={"gameId": game_id, "board": games[game_id].board})
-            breakpoint()
+            response_ok = client.post(
+                "/api/score-word", json={"gameId": game_id, "word": "CAT"})
+            response_ok_json = response_ok.json
 
-            self.assertEqual(response_score_word)
+            response_not_on_board = client.post(
+                "/api/score-word", json={"gameId": game_id, "word": "APPLE"})
+            response_not_on_board_json = response_not_on_board.json
+
+            response_not_a_word = client.post(
+                "/api/score-word", json={"gameId": game_id, "word": "CATOL"})
+            response_not_a_word_json = response_not_a_word.json
+
+            self.assertEqual(response_ok_json['result'], "ok")
+            self.assertEqual(
+                response_not_on_board_json['result'], "not-on-board")
+            self.assertEqual(response_not_a_word_json['result'], "not-word")

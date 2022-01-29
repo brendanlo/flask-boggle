@@ -38,8 +38,6 @@ def check_if_word_is_valid():
 
     game_id = request.json["gameId"]
 
-    breakpoint()
-
     word = request.json["word"]
     game = games[game_id]
 

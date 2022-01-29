@@ -169,8 +169,6 @@ class BoggleGame():
         if len(word) == 1:
             return True
 
-        breakpoint()
-
         # Otherwise, this letter is good, so note that we've seen it, and try of
         # all of its neighbors for the first letter of the rest of the word/
 
