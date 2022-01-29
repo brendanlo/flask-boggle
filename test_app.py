@@ -45,3 +45,28 @@ class BoggleAppTestCase(TestCase):
             self.assertEqual(type(gameId_board_obj['board'][0]), type([]))
             # check whether the new gameId is a key in games
             self.assertIn(gameId_board_obj['gameId'], games)
+
+    # NOTE should this be in it's own class?
+
+    def test_app_score_word(self):
+        """test whether the api/score-word endpoint works or not"""
+        with self.client as client:
+            response_new_game = client.post("/api/new-game")
+
+            breakpoint()
+            game_obj = response_new_game.json
+
+            game_id = game_obj.get("gameId")
+
+            # games[game_id].board = [
+            #     ['C', 'A', 'T', 'O', 'L'],
+            #     ['A', 'Z', 'A', 'O', 'G'],
+            #     ['S', 'S', 'I', 'U', 'D'],
+            #     ['A', 'E', 'L', 'E', 'M'],
+            #     ['J', 'R', 'D', 'S', 'G']]
+
+            response_score_word = client.post(
+                "/api/score-word", json={"gameId": game_id, "board": games[game_id].board})
+            breakpoint()
+
+            self.assertEqual(response_score_word)
